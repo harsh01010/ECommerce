@@ -1,0 +1,54 @@
+﻿@using IMS.Web.Models.Order
+
+@model IEnumerable<ReturnShippingAddressDto>
+
+<div class="container  mt-4">
+
+    <div class="bg-primary my-3 p-3">
+    <h2 class="text-light-emphasis "><i class="bi bi-geo-alt-fill"></i> All Added Shipping Addresses</h2>
+    </div>
+    <div class="text-end mb-3">
+        <a asp-controller="Order" asp-action="Details" class="btn btn-outline-primary">Add New Address</a>
+    </div>
+
+    @if (Model != null && Model.Any())
+    {
+        <div class="list-group ">
+            @foreach (var address in Model)
+            {
+                <div class="list-group-item bg-secondary">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h4 class="mb-1 text-light">Address ID: @address.shippingAddressId</h4>
+                            <p class="mb-1 text-light">
+                                <strong>House No:</strong> @address.houseNo <br />
+                                <strong>Street:</strong> @address.street <br />
+                                <strong>Pin Code:</strong> @address.pinCode <br />
+                                <strong>City:</strong> @address.city <br />
+                                <strong>State:</strong> @address.state
+                            </p>
+                        </div>
+                        <div class="text-end">
+                            <!-- Hidden fields to pass additional data to the Confirm action -->
+                            <form asp-controller="Order" asp-action="Confirm" method="post">
+                                <input type="hidden" name="ShippingAddressId" value="@address.shippingAddressId" />
+                                <!-- Include other necessary hidden fields here -->
+                                <button type="submit" class="btn btn-primary btn-sm mb-2">Confirm</button>
+                            </form>
+
+                            <a asp-controller="Order" asp-action="Remove" asp-route-shippingAddressId="@address.shippingAddressId" class="btn btn-danger btn-sm">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-secondary text-center text-secondary">
+            <h4>No addresses found</h4>
+            <p>Please add an address.</p>
+        </div>
+    }
+</div>
